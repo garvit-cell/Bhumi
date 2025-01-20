@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plant Shop</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <style>body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+      
+      header {
+        background-color: #4CAF50;
+        color: white;
+        padding: 1rem;
+        text-align: center;
+      }
+      
+      nav a {
+        margin: 0 1rem;
+        color: white;
+        text-decoration: none;
+      }
+      
+      main {
+        padding: 1rem;
+      }
+      
+      .plant-list {
+        display: flex;
+        gap: 1rem;
+      }
+      
+      .plant {
+        border: 1px solid #ddd;
+        padding: 1rem;
+        text-align: center;
+      }
+      
+      .plant img {
+        width: 100px;
+        height: 100px;
+      }
+      
+      button {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+      }
+      
+      button:hover {
+        background-color: #45a049;
+      }
+      
+      footer {
+        text-align: center;
+        padding: 1rem;
+        background-color: #f1f1f1;
+        margin-top: 1rem;
+      }
+      </style>
+      <script>
+      let cart = [];
+
+        function addToCart(name, price) {
+          cart.push({ name, price });
+          updateCart();
+        }
+        
+        function updateCart() {
+          const cartItems = document.getElementById("cart-items");
+          const total = document.getElementById("total");
+          
+          cartItems.innerHTML = "";
+          let totalPrice = 0;
+          
+          cart.forEach((item, index) => {
+            const li = document.createElement("li");
+            li.textContent = `${item.name} - $${item.price}`;
+            const removeButton = document.createElement("button");
+            removeButton.textContent = "Remove";
+            removeButton.onclick = () => removeFromCart(index);
+            li.appendChild(removeButton);
+            cartItems.appendChild(li);
+            totalPrice += item.price;
+          });
+          
+          total.textContent = `Total: $${totalPrice}`;
+        }
+        
+        function removeFromCart(index) {
+          cart.splice(index, 1);
+          updateCart();
+        }
+        
+        function checkout() {
+          alert("Thank you for your purchase!");
+          cart = [];
+          updateCart();
+        }
+        </script>
+  <header>
+    <h1>Welcome to Plant Shop</h1>
+    <nav>
+      <a href="#plants">Shop Plants</a>
+      <a href="#cart">Cart</a>
+    </nav>
+  </header>
+  
+  <main>
+    <section id="plants">
+      <h2>Available Plants</h2>
+      <div class="plant-list">
+        <div class="plant">
+          <img src="plant1.jpg" alt="Plant 1">
+          <h3>Monstera</h3>
+          <p>$20</p>
+          <button onclick="addToCart('Monstera', 20)">Add to Cart</button>
+        </div>
+        <div class="plant">
+          <img src="plant2.jpg" alt="Plant 2">
+          <h3>Succulent</h3>
+          <p>$10</p>
+          <button onclick="addToCart('Succulent', 10)">Add to Cart</button>
+        </div>
+        <div class="plant">
+          <img src="plant3.jpg" alt="Plant 3">
+          <h3>Fiddle Leaf Fig</h3>
+          <p>$30</p>
+          <button onclick="addToCart('Fiddle Leaf Fig', 30)">Add to Cart</button>
+        </div>
+      </div>
+    </section>
+    
+    <section id="cart">
+      <h2>Your Cart</h2>
+      <ul id="cart-items"></ul>
+      <p id="total"></p>
+      <button onclick="checkout()">Checkout</button>
+    </section>
+  </main>
+  
+  <footer>
+    <p>&copy; 2024 Plant Shop</p>
+  </footer>
+  
+  <script src="script.js"></script>
+</body>
+</html>

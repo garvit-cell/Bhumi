@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart - Plant Shop</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .cart-container {
+            max-width: 800px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .cart-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+        .cart-item img {
+            width: 50px;
+            height: 50px;
+            border-radius: 5px;
+        }
+        .cart-item-details {
+            flex: 2;
+            margin-left: 15px;
+        }
+        .cart-item-quantity {
+            display: flex;
+            align-items: center;
+        }
+        .cart-item-quantity input {
+            width: 40px;
+            text-align: center;
+            margin: 0 10px;
+        }
+        .cart-item-remove {
+            color: #d9534f;
+            cursor: pointer;
+        }
+        .cart-total {
+            text-align: right;
+            margin-top: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .checkout-btn {
+            display: block;
+            text-align: center;
+            background-color: #28a745;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            margin-top: 20px;
+        }
+        .checkout-btn:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="cart-container">
+        <h1 class="cart-header">Your Cart</h1>
+        <div class="cart-item" data-price="10">
+            <img src="plant1.jpg" alt="Plant Name">
+            <div class="cart-item-details">
+                <p><strong>Plant Name</strong></p>
+                <p>$10.00</p>
+            </div>
+            <div class="cart-item-quantity">
+                <button class="decrease">-</button>
+                <input type="number" value="1" min="1">
+                <button class="increase">+</button>
+            </div>
+            <div class="cart-item-remove">Remove</div>
+        </div>
+
+        <div class="cart-item" data-price="15">
+            <img src="plant2.jpg" alt="Another Plant">
+            <div class="cart-item-details">
+                <p><strong>Another Plant</strong></p>
+                <p>$15.00</p>
+            </div>
+            <div class="cart-item-quantity">
+                <button class="decrease">-</button>
+                <input type="number" value="1" min="1">
+                <button class="increase">+</button>
+            </div>
+            <div class="cart-item-remove">Remove</div>
+        </div>
+
+        <div class="cart-total">Total: $25.00</div>
+
+        <a href="checkout.html" class="checkout-btn">Proceed to Checkout</a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const cartItems = document.querySelectorAll('.cart-item');
+            const totalElement = document.querySelector('.cart-total');
+
+            function updateTotal() {
+                let total = 0;
+                cartItems.forEach(item => {
+                    const price = parseFloat(item.getAttribute('data-price'));
+                    const quantity = parseInt(item.querySelector('input').value);
+                    total += price * quantity;
+                });
+                totalElement.textContent = `Total: $${total.toFixed(2)}`;
+            }
+
+            cartItems.forEach(item => {
+                const decreaseButton = item.querySelector('.decrease');
+                const increaseButton = item.querySelector('.increase');
+                const inputField = item.querySelector('input');
+                const removeButton = item.querySelector('.cart-item-remove');
+
+                decreaseButton.addEventListener('click', () => {
+                    let currentValue = parseInt(inputField.value);
+                    if (currentValue > 1) {
+                        inputField.value = currentValue - 1;
+                        updateTotal();
+                    }
+                });
+
+                increaseButton.addEventListener('click', () => {
+                    inputField.value = parseInt(inputField.value) + 1;
+                    updateTotal();
+                });
+
+                inputField.addEventListener('input', () => {
+                    if (inputField.value < 1) inputField.value = 1;
+                    updateTotal();
+                });
+
+                removeButton.addEventListener('click', () => {
+                    item.remove();
+                    updateTotal();
+                });
+            });
+
+            updateTotal();
+        });
+    </script>
+</body>
+</html>
